@@ -1,12 +1,12 @@
 ﻿namespace BasketballClubAPI.Models {
     public enum Position {
-        [EnumStringValue("guard")]
+        [EnumStringValue("Guard")]
         Guard,
 
-        [EnumStringValue("forward")]
+        [EnumStringValue("Forward")]
         Forward,
 
-        [EnumStringValue("center")]
+        [EnumStringValue("Center")]
         Center
     }
 }

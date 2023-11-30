@@ -39,10 +39,11 @@ namespace BasketballClubAPI.Controllers {
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(PlayerDto))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ValidationProblemDetails))]
-        public IActionResult CreatePlayer([FromBody] PlayerDto PlayerDto) {
+        public IActionResult CreatePlayer([FromBody] PlayerDto playerDto) {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            var player = _mapper.Map<Player>(PlayerDto);
+
+            var player = _mapper.Map<Player>(playerDto);
 
             if (!_playerRepository.CreatePlayer(player)) {
                 // Handle the error when TeamId is not valid
@@ -50,7 +51,9 @@ namespace BasketballClubAPI.Controllers {
                 return BadRequest(ModelState);
             }
 
-            return CreatedAtAction(nameof(GetPlayerById), new { id = player.Id }, player);
+            var createdPlayerDto = _mapper.Map<PlayerDto>(player); // Map the created Player to PlayerDto
+
+            return CreatedAtAction(nameof(GetPlayerById), new { id = player.Id }, createdPlayerDto);
         }
         [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
