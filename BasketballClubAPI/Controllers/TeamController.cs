@@ -37,6 +37,26 @@ namespace BasketballClubAPI.Controllers {
 
             return Ok(response);
         }
+
+        [HttpGet("name/{name}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(TeamDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult GetTeamByName([FromRoute] string name) {
+            if (!_teamRepository.TeamExists(name))
+                return NotFound();
+
+            var team = _teamRepository.GetTeamByName(name);
+            var response = _mapper.Map<TeamDto>(team);
+
+            return Ok(response);
+        }
+        [HttpGet("exists/{name}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(bool))]
+        public IActionResult TeamExists([FromRoute] string name) {
+            var exists = _teamRepository.TeamExists(name);
+            return Ok(exists);
+        }
+
         [HttpGet("{teamId}/players")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<PlayerDto>))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

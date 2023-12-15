@@ -20,14 +20,27 @@ namespace BasketballClubAPI.Controllers {
         }
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<MatchDto>))]
-        public IActionResult GetAllCoaches() {
+        public IActionResult GetAllMatches() {
             var matches = _matchRepository.GetAllMatches();
 
             var responseList = _mapper.Map<List<MatchDto>>(matches);
             return Ok(responseList);
 
         }
-        [HttpGet("{id}")]
+
+        [HttpGet("team/{teamId}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<MatchDto>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult GetAllMatchesByTeamId([FromRoute] int teamId)
+        {
+            if (!_teamRepository.TeamExists(teamId))
+                return NotFound();
+            var matches = _matchRepository.GetAllMtachesByTeamId(teamId);
+            var responseList = _mapper.Map<List<MatchDto>>(matches);
+            return Ok(responseList);
+        }
+
+        [HttpGet("match/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(MatchDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult GetMatchById([FromRoute] int id) {

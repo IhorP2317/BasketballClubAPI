@@ -11,11 +11,14 @@ namespace BasketballClubAPI.Controllers {
     [ApiController]
     public class PlayerController: ControllerBase {
         private readonly IPlayerRepository _playerRepository;
+        private readonly ITeamRepository _teamRepository;
         private readonly IMapper _mapper;
         public PlayerController(IPlayerRepository playerRepository,
-            IMapper mapper) {
+            IMapper mapper,
+            ITeamRepository teamRepository) {
             _playerRepository = playerRepository;
             _mapper = mapper;
+            _teamRepository = teamRepository;
         }
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<PlayerDto>))]
@@ -25,7 +28,17 @@ namespace BasketballClubAPI.Controllers {
             var responseList = _mapper.Map<List<PlayerDto>>(players);
             return Ok(responseList);
         }
-        [HttpGet("{id}")]
+        [HttpGet("team/{teamId}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<PlayerDto>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult GetAllPlayersByTeamId([FromRoute] int teamId) {
+             if(!_teamRepository.TeamExists(teamId))
+                    return NotFound();
+                var players = _playerRepository.GetAllPlayersByTeamId(teamId);
+                var response = _mapper.Map<List<PlayerDto>>(players);
+                return Ok(response);
+         }
+        [HttpGet("player/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PlayerDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult GetPlayerById([FromRoute] int id) {

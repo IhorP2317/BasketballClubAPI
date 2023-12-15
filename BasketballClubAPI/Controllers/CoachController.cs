@@ -12,10 +12,12 @@ namespace BasketballClubAPI.Controllers {
     [ApiController]
     public class CoachController : ControllerBase {
         private readonly ICoachRepository _coachRepository;
+        private readonly ITeamRepository _teeamRepository;
         private readonly IMapper _mapper;
-        public CoachController(ICoachRepository coachRepository, IMapper mapper) {
+        public CoachController(ICoachRepository coachRepository,  IMapper mapper, ITeamRepository teeamRepository) {
             _coachRepository = coachRepository;
             _mapper = mapper;
+            _teeamRepository = teeamRepository;
         }
 
         [HttpGet]
@@ -27,7 +29,20 @@ namespace BasketballClubAPI.Controllers {
             return Ok(responseList);
 
         }
-        [HttpGet("{id}")]
+        [HttpGet("team/{teamId}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CoachDto))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult GetCoachByTeamId([FromRoute] int teamId) {
+            if (!_teeamRepository.TeamExists(teamId))
+                return NotFound();
+            var team = _teeamRepository.GetTeamById(teamId);
+
+            var coach = _coachRepository.GetCoachById((int)team.HeadCoachId);
+            var response = _mapper.Map<CoachDto>(coach);
+
+            return Ok(response);
+        }
+        [HttpGet("coach/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CoachDto))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult GetCoachById([FromRoute] int id) {

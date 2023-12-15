@@ -10,6 +10,8 @@ namespace BasketballClubAPI.Models {
         public string Location { get; set; } = null!;
         public int HomeTeamId { get; set; } // Foreign key for HomeTeam
         public int AwayTeamId { get; set; } // Foreign key for AwayTeam
+        public int HomeTeamScore { get; set; }
+        public int AwayTeamScore { get; set; }
         public DateTime StartTime { get; set; }
         [EnumDataType(typeof(MatchStatus))]
         public MatchStatus Status { get; set; }

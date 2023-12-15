@@ -34,6 +34,14 @@ namespace BasketballClubAPI.Data {
                 .Property(t => t.HeadCoachId)
                 .IsRequired(false);
 
+
+
+            modelBuilder.Entity<Match>()
+                .Property(e => e.HomeTeamScore)
+                .HasDefaultValue(0);
+            modelBuilder.Entity<Match>()
+                .Property(e => e.AwayTeamScore)
+                .HasDefaultValue(0);
             modelBuilder.Entity<Match>()
                 .HasOne(m => m.HomeTeam)
                 .WithMany()

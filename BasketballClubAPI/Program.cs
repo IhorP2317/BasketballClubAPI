@@ -50,6 +50,7 @@ app.UseExceptionHandler(options => {
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+app.UseCors("AllowAny");
 
 app.MapControllers();
 

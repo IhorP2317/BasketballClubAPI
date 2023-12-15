@@ -13,6 +13,11 @@ namespace BasketballClubAPI.Repositories {
             return _dataContext.Player.ToList();
         }
 
+        public ICollection<Player> GetAllPlayersByTeamId(int teamId)
+        {
+            return _dataContext.Player.Where(p => p.TeamId == teamId).ToList();
+        
+        }
         public Player GetPlayerById(int id) {
             return _dataContext.Player.FirstOrDefault(p => p.Id == id);
         }

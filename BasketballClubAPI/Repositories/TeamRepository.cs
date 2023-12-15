@@ -27,10 +27,17 @@ namespace BasketballClubAPI.Repositories {
                .FirstOrDefault(t => t.Id == id);
         }
 
-       
+        public Team GetTeamByName(string name)
+        {
+            return _dataContext.Team
+                .Include(t => t.Players)
+                .Include(t => t.HeadCoach)
+                .FirstOrDefault(t => t.Name == name);
+        }
 
-
-
+        public bool TeamExists(string name) {
+            return _dataContext.Team.Any(t => t.Name == name);
+        }
         public bool TeamExists(int id)
         {
             return _dataContext.Team.Any(t => t.Id == id);

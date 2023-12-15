@@ -19,6 +19,16 @@ namespace BasketballClubAPI.Repositories {
                 .ToList();
         }
 
+        public ICollection<Match> GetAllMtachesByTeamId(int teamId)
+        {
+            return _dataContext.Match
+                .Include(m => m.HomeTeam)
+                .Include(m => m.AwayTeam)
+                .Include(m => m.Statistics).Where(m => m.AwayTeamId == teamId || m.HomeTeamId == teamId).ToList();
+
+
+        }
+
         public Match GetMatchById(int id)
         {
             return _dataContext.Match

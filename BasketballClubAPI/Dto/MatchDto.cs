@@ -17,6 +17,12 @@ namespace BasketballClubAPI.Dto {
         [Required(ErrorMessage = "AwayTeamId is required")]
         [Range(1, int.MaxValue, ErrorMessage = "AwayTeamId must be a positive number!")]
         public int AwayTeamId { get; set; }
+        [Required(ErrorMessage = "Home Team Score is required")]
+        [Range(0, int.MaxValue, ErrorMessage = "Home Team Score must be a not negative number!")]
+        public int HomeTeamScore { get; set; }
+        [Required(ErrorMessage = "Away Team Score is required")]
+        [Range(0, int.MaxValue, ErrorMessage = "Away Team Score must be a  not negative number!")]
+        public int AwayTeamScore { get; set; }
 
         [Required(ErrorMessage = "Status of match is required!")]
         [EnumValue(typeof(MatchStatus), ErrorMessage = "Invalid Status of match!")]
